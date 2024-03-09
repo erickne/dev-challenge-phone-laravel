@@ -3,43 +3,50 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Config;
+use Exception;
 use Illuminate\Http\Request;
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VoiceGrant;
 
+
 class GenerateAccessTokenController extends Controller
 {
     //
-    public function generate_token(Request $request)
+    public function execute(Request $request)
     {
+        $accountSid = Config::get('twillio.accountSid');
+        $apiKeySid = Config::get('twillio.apiKeySid');
+        $apiKeySecret = Config::get('twillio.apiKeySecret');
+        $twiMLSid = Config::get('twillio.twiMLSid');
+        $phoneNumber = Config::get('twillio.phoneNumber');
 
-        // Substitute your Twilio Account SID and API Key details
-//        $accountSid = ('ACb41320125184583ee80a3a5b45445a59');//PROD
-        $accountSid = ('ACcad9f0a12d81689ca0d1cb3f9b9f67a1');//TEST
-        $apiKeySid = ('SKaae49cd1e6252ff762634e61968eeb8e');
-        $apiKeySecret = ('vALqvhySXLsI6dacfX95eJs3HTWvZDfJ');
         $identity = $request->identity;
+        if (!$identity) {
+            throw new Exception('invalid id');
+        }
+        // Double check!
+//        $identity = $phoneNumber;
+//        $identity ='AP3a0b5aea88ba7c665f57b160bfb9c25a';
+        $identity = 'erickengelhardt';
 
-        // Create an Access Token
         $token = new AccessToken(
-            $accountSid,
-            $apiKeySid,
-            $apiKeySecret,
-            3600,
-            $identity,
+            $accountSid, $apiKeySid, $apiKeySecret, 3600, $identity
+//            $accountSid, $apiKeySid, $apiKeySecret, 3600
         );
 
-        // Grant access to Voice
         $grant = new VoiceGrant();
+        $grant->setIncomingAllow(true);
 
         $token->addGrant($grant);
 
         // Serialize the token as a JWT
-        $result=[
+        $result = [
             "identity" => $identity,
-            "token"=> $token->toJWT()
+            "token" => $token->toJWT()
         ];
 
         return response()->json($result);
     }
+
 }
