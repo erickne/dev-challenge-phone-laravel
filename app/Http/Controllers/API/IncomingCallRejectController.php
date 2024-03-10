@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Config;
+use App\Services\Twilio\UpdateCallStatusTwilioService;
 use Illuminate\Http\Request;
 use Twilio\Exceptions\ConfigurationException;
 use Twilio\Exceptions\TwilioException;
-use Twilio\Rest\Client;
 
 
 class IncomingCallRejectController extends Controller
@@ -15,22 +14,15 @@ class IncomingCallRejectController extends Controller
     /**
      * @throws ConfigurationException
      * @throws TwilioException
+     * @throws \Exception
      */
     public function execute(Request $request): string
     {
-        $twilio = new Client(Config::get('twillio.accountSid'), Config::get('twillio.token'));
-
         $callSid = $request->get('callSid');
 
-        if (!$callSid) {
-            throw new Exception('invalid callSid');
-        }
+        $service = new UpdateCallStatusTwilioService();
+        $status = $service->execute($callSid, "completed");
 
-        $call = $twilio->calls($callSid)->update(array(
-            "status" => "completed"
-        ));
-
-
-        return response()->json(['status' => $call->status]);
+        return response(null, 422)->json(['status' => $status]);
     }
 }
