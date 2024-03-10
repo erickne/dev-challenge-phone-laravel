@@ -20,6 +20,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::get('access_token', \App\Http\Controllers\API\GenerateAccessTokenController::class.'@execute');
 Route::post('handle_calls', \App\Http\Controllers\API\HandleIncomingCallsController::class.'@execute');
+Route::get('call_reject', \App\Http\Controllers\API\IncomingCallRejectController::class.'@execute');
+Route::get('call_accept', \App\Http\Controllers\API\IncomingCallAcceptController::class.'@execute');
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
