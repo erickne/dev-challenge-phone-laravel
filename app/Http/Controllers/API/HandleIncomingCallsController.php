@@ -4,7 +4,6 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Call;
-use Config;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -32,7 +31,7 @@ class HandleIncomingCallsController extends Controller
 
             DB::commit();
         } catch (Exception $ex) {
-            dd($ex);
+            Log::error($ex->getMessage());
             DB::rollBack();
         }
 

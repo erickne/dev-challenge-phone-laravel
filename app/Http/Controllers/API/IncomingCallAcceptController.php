@@ -26,6 +26,6 @@ class IncomingCallAcceptController extends Controller
         $service = new UpdateCallStatusTwilioService();
         $status = $service->execute($callSid, "in-progress");
 
-        return response(null, 422)->json(['status' => $status]);
+        return response()->json(['status' => $status], $status ? 200 : 422)->getContent();
     }
 }

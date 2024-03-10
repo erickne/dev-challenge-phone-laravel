@@ -23,6 +23,6 @@ class IncomingCallRejectController extends Controller
         $service = new UpdateCallStatusTwilioService();
         $status = $service->execute($callSid, "completed");
 
-        return response(null, 422)->json(['status' => $status]);
+        return response()->json(['status' => $status], $status ? 200 : 422)->getContent();
     }
 }

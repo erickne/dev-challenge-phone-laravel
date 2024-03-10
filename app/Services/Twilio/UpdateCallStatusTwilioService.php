@@ -4,6 +4,7 @@ namespace App\Services\Twilio;
 
 use App\Models\Call;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Log;
 use Twilio\Exceptions\ConfigurationException;
 use Twilio\Rest\Client;
 
@@ -19,8 +20,7 @@ class UpdateCallStatusTwilioService
      */
     public function execute($callSid, $status)
     {
-
-        if (!$status) {
+        if (!$callSid) {
             throw new \Exception('invalid callSid');
         }
 
@@ -40,10 +40,10 @@ class UpdateCallStatusTwilioService
             Call::updateOrCreate(
                 ['CallSid' => $callSid], ["status" => $status]
             );
-
+            return true;
         } catch (\Exception $ex) {
-            $status = 'error';
+            Log::error($ex->getMessage());
+            return false;
         }
-        return $status;
     }
 }
