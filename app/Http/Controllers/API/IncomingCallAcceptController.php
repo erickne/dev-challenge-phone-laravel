@@ -19,13 +19,13 @@ class IncomingCallAcceptController extends Controller
      * @throws TwilioException
      * @throws \Exception
      */
-    public function execute(Request $request): string
+    public function execute(Request $request): \Illuminate\Http\JsonResponse
     {
         $callSid = $request->get('callSid');
 
         $service = new UpdateCallStatusTwilioService();
         $status = $service->execute($callSid, "in-progress");
 
-        return response()->json(['status' => $status], $status ? 200 : 422)->getContent();
+        return response()->json(['status' => $status], $status ? 200 : 422);
     }
 }

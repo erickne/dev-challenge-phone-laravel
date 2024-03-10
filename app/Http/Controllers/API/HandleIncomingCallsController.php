@@ -25,9 +25,12 @@ class HandleIncomingCallsController extends Controller
                 $request->post()
             );
 
-            $voice->dial(null, [
-                'answerOnBridge' => true,
-            ])->client('erickengelhardt');
+            $gather = $voice->gather(['numDigits' => 1, 'action' => '/api/handle_response']);
+            $gather->say('For forwarding the call to an agent, press 1. To record a voicemail, press 2.');
+
+//            $voice->dial(null, [
+//                'answerOnBridge' => true,
+//            ])->client('erickengelhardt');
 
             DB::commit();
         } catch (Exception $ex) {

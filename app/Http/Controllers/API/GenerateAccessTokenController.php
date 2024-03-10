@@ -13,7 +13,7 @@ use Twilio\Jwt\Grants\VoiceGrant;
 class GenerateAccessTokenController extends Controller
 {
     //
-    public function execute(Request $request)
+    public function execute(Request $request): \Illuminate\Http\JsonResponse
     {
         $accountSid = Config::get('twillio.accountSid');
         $apiKeySid = Config::get('twillio.apiKeySid');
