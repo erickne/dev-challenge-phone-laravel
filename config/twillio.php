@@ -6,4 +6,5 @@ return [
     'apiKeySecret' => env('TWILIO_API_SECRET'),
     'twiMLSid' => env('TWIML_APP_SID'),
     'phoneNumber' => env('TWILIO_PHONE_NUMBER'),
+    'token' => env('TWILIO_TOKEN'),
 ];
