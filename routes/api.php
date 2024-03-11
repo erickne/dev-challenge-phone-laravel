@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::get('access_token', \App\Http\Controllers\API\GenerateAccessTokenController::class.'@execute');
 Route::post('handle_calls', \App\Http\Controllers\API\HandleIncomingCallsController::class.'@execute');
 Route::post('handle_response', \App\Http\Controllers\API\HandleResponseFromCallerController::class.'@execute');
@@ -25,7 +21,3 @@ Route::post('handle_recording', \App\Http\Controllers\API\HandleRecordingControl
 Route::get('call_reject', \App\Http\Controllers\API\IncomingCallRejectController::class.'@execute');
 Route::get('call_accept', \App\Http\Controllers\API\IncomingCallAcceptController::class.'@execute');
 Route::get('calls', \App\Http\Controllers\API\GetAllCallsController::class.'@execute');
-
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
