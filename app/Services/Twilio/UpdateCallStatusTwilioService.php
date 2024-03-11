@@ -10,15 +10,12 @@ use Twilio\Rest\Client;
 
 class UpdateCallStatusTwilioService
 {
-    public function __construct()
-    {
-    }
 
     /**
      * @throws ConfigurationException
      * @throws \Exception
      */
-    public function execute($callSid, $status)
+    public function execute($callSid, $status): bool
     {
         if (!$callSid) {
             throw new \Exception('invalid callSid');
@@ -28,14 +25,14 @@ class UpdateCallStatusTwilioService
             throw new \Exception('invalid status');
         }
 
-        $twilio = new Client(Config::get('twillio.accountSid'), Config::get('twillio.token'));
+        $twilio = new Client(Config::get('twilio.accountSid'), Config::get('twilio.token'));
 
         try {
             $call = $twilio->calls($callSid)->update(array(
                 "status" => $status
             ));
             if ($call->status !== $status) {
-                throw new \Exception('Could not update Twilio call');
+                throw new \Exception('Could not update Twilio call status');
             }
             Call::updateOrCreate(
                 ['CallSid' => $callSid], ["status" => $status]

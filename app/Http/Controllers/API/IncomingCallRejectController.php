@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Services\Twilio\UpdateCallStatusTwilioService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Twilio\Exceptions\ConfigurationException;
 use Twilio\Exceptions\TwilioException;
@@ -16,7 +17,7 @@ class IncomingCallRejectController extends Controller
      * @throws TwilioException
      * @throws \Exception
      */
-    public function execute(Request $request): \Illuminate\Http\JsonResponse
+    public function execute(Request $request): JsonResponse
     {
         $callSid = $request->get('callSid');
 

@@ -3,37 +3,33 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use Config;
 use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Twilio\Jwt\AccessToken;
 use Twilio\Jwt\Grants\VoiceGrant;
 
 
 class GenerateAccessTokenController extends Controller
 {
-    //
-    public function execute(Request $request): \Illuminate\Http\JsonResponse
+    /**
+     * @param Request $request
+     * @return JsonResponse
+     * @throws Exception
+     */
+    public function execute(Request $request): JsonResponse
     {
-        $accountSid = Config::get('twillio.accountSid');
-        $apiKeySid = Config::get('twillio.apiKeySid');
-        $apiKeySecret = Config::get('twillio.apiKeySecret');
-        $twiMLSid = Config::get('twillio.twiMLSid');
-        $phoneNumber = Config::get('twillio.phoneNumber');
+        $accountSid = Config::get('twilio.accountSid');
+        $apiKeySid = Config::get('twilio.apiKeySid');
+        $apiKeySecret = Config::get('twilio.apiKeySecret');
 
         $identity = $request->identity;
         if (!$identity) {
-            throw new Exception('invalid id');
+            throw new \Exception('invalid id');
         }
-        // Double check!
-//        $identity = $phoneNumber;
-//        $identity ='AP3a0b5aea88ba7c665f57b160bfb9c25a';
-        $identity = 'erickengelhardt';
 
-        $token = new AccessToken(
-            $accountSid, $apiKeySid, $apiKeySecret, 3600, $identity
-//            $accountSid, $apiKeySid, $apiKeySecret, 3600
-        );
+        $token = new AccessToken($accountSid, $apiKeySid, $apiKeySecret, 3600, $identity);
 
         $grant = new VoiceGrant();
         $grant->setIncomingAllow(true);
