@@ -49,17 +49,18 @@ ngrok http 8000
 7. Update Twilio webhook
 
 - https://console.twilio.com/us1/develop/phone-numbers/manage/incoming/
-- Add ngrok url, including the api endpoint
+- Add `ngrok` url, including the api path
 ```txt
 https://******.ngrok-free.app/api/handle_calls
 ```
-
-
 
 ### Usage
 The application has the following routes:
 
 - `GET /access_token` - Executes the GenerateAccessTokenController
 - `POST /handle_calls` - Executes the HandleIncomingCallsController
+- `POST /handle_response` - Executes the HandleResponseFromCallerController
+- `POST /handle_recording` - Executes the HandleRecordingController
 - `GET /call_reject` - Executes the IncomingCallRejectController
 - `GET /call_accept` - Executes the IncomingCallAcceptController
+- `GET /calls` - Executes the GetAllCallsController
